@@ -1,0 +1,13 @@
+<th:block th:fragment="loginForm">
+    <form th:action="@{/login}" th:method="post">
+        <div><label> User Name : <input type="text" name="username"/> </label></div>
+        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+</th:block>
+
+<th:block th:fragment="logout">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</th:block>

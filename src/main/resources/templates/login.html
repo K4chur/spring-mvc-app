@@ -1,0 +1,14 @@
+<th:block th:replace="~{parts/common :: topBody}"/>
+
+    Login to your account
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+
+    <th:block th:replace="~{parts/login :: loginForm}"/>
+    <a href="/registration"> Registration </a>
+
+<th:block th:replace="~{parts/common :: bottomBody}"/>

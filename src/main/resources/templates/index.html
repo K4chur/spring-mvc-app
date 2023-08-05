@@ -1,0 +1,30 @@
+<th:block th:replace="~{parts/common :: topBody}"/>
+
+<th:block th:replace="~{parts/login :: logout}" />
+<span><a href="/user">All users</a></span>
+<div>
+    <form th:action="@{/index}" th:object="${message}" th:method="post">
+        <p> Text: <input type="text" th:field="*{text}"/></p>
+        <p> Tag: <input type="text" th:field="*{tag}"/></p>
+        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    </form>
+</div>
+
+<div>Message list</div>
+<form th:method="get" th:action="@{/index}">
+    <input type="text" name="filterValue" th:value="${filterValue}" placeholder="Enter filter value">
+    <button type="submit">Search</button>
+</form>
+<br>
+
+<div th:if="${messages.isEmpty()}">
+    <p>No messages available.</p>
+</div>
+<div th:each="message: ${messages}">
+    <b th:text="${message.id}"></b>
+    <span th:text="${message.text}"></span>
+    <i th:text="${message.tag}"></i>
+    <strong th:text="${message.authorName}"></strong>
+</div>
+
+<th:block th:replace="~{parts/common :: bottomBody}"/>

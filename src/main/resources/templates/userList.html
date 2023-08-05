@@ -1,0 +1,25 @@
+<th:block th:replace="~{parts/common :: topBody}"/>
+
+List of users
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.username}"/>
+        <td>
+            <p th:each="role: ${user.roles}">
+                <span th:text="${role} + ','"></span>
+            </p>
+        </td>
+        <td> <a th:href="@{/user/{id}(id=${user.id})}">Edit</a> </td>
+    </tr>
+    </tbody>
+</table>
+
+<th:block th:replace="~{parts/common :: bottomBody}"/>
