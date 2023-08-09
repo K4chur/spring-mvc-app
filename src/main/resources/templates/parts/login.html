@@ -1,13 +1,36 @@
 <th:block th:fragment="loginForm">
     <form th:action="@{/login}" th:method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
-        <div><input type="submit" value="Sign In"/></div>
+        <div class="mb-3">
+            <label for="inputUsername" class="form-label">User name:</label>
+            <input type="text" class="form-control" id="inputUsername" aria-describedby="usernameHelp" name="username" placeholder="Username">
+            <div id="usernameHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
 </th:block>
 
 <th:block th:fragment="logout">
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
+    <form th:action="@{/logout}" method="post" class="nav-link active me-auto">
+        <input type="submit" class="btn btn-primary" value="Sign Out"/>
     </form>
+</th:block>
+
+<th:block th:fragment="registrationForm">
+
+    <form th:action="@{/registration}" th:object="${user}" th:method="post">
+        <div class="mb-3">
+            <label for="inputUsername" class="form-label">User name:</label>
+            <input type="text" th:field="*{username}" class="form-control" id="inputUsername" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" id="inputPassword" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
 </th:block>

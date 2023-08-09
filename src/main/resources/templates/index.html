@@ -1,30 +1,59 @@
 <th:block th:replace="~{parts/common :: topBody}"/>
 
-<th:block th:replace="~{parts/login :: logout}" />
-<span><a href="/user">All users</a></span>
-<div>
-    <form th:action="@{/index}" th:object="${message}" th:method="post">
-        <p> Text: <input type="text" th:field="*{text}"/></p>
-        <p> Tag: <input type="text" th:field="*{tag}"/></p>
-        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
-    </form>
-</div>
 
-<div>Message list</div>
-<form th:method="get" th:action="@{/index}">
-    <input type="text" name="filterValue" th:value="${filterValue}" placeholder="Enter filter value">
-    <button type="submit">Search</button>
+<form th:method="get" th:action="@{/index}" class="row row-cols-lg-auto g-3 align-items-center mb-3">
+    <div class="col-12">
+        <input type="text" name="filterValue" th:value="${filterValue}" placeholder="Search by tag" class="form-control">
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
 </form>
-<br>
+
+<p class="d-inline-flex gap-1 mb-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdd" aria-expanded="false" aria-controls="collapseAdd">
+        Add new message
+    </button>
+
+    <div class="collapse" id="collapseAdd">
+        <form th:action="@{/index}" th:object="${message}" th:method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <label class="visually-hidden" for="Text">Text</label>
+                <div class="input-group-text">Text:</div>
+                <input type="text" class="form-control" id="Text" th:field="*{text}" placeholder="Lets imagine something...">
+            </div>
+            <div class="input-group mb-3">
+                <label class="visually-hidden" for="Tag">Tag</label>
+                <div class="input-group-text">Tag:</div>
+                <input type="text" class="form-control" id="Tag" th:field="*{tag}" placeholder="Tag">
+            </div>
+            <div class="mb-3">
+                <label for="File" class="visually-hidden">Choose file:</label>
+                <input class="form-control" type="file" name="file" id="File">
+            </div>
+            <p><input type="submit" class="btn btn-primary mb-3" value="Submit"/> <input type="reset" class="btn btn-primary mb-3" value="Reset"/></p>
+        </form>
+    </div>
+</p>
 
 <div th:if="${messages.isEmpty()}">
     <p>No messages available.</p>
 </div>
-<div th:each="message: ${messages}">
-    <b th:text="${message.id}"></b>
-    <span th:text="${message.text}"></span>
-    <i th:text="${message.tag}"></i>
-    <strong th:text="${message.authorName}"></strong>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div th:each="message: ${messages}" class="card p-0 m-2" style="width: 18rem;">
+        <div th:if="${message.filename != null}">
+            <img th:src="@{/img/} + ${message.filename}" class="card-img-top">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${message.tag}"></h5>
+            <p class="card-text" th:text="${message.text}"></p>
+        </div>
+        <div class="card-footer">
+            <p class="card-text" th:text="${message.author?.getUsername() ?: '<none>'}"></p>
+        </div>
+    </div>
 </div>
 
 <th:block th:replace="~{parts/common :: bottomBody}"/>

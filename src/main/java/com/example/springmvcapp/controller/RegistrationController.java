@@ -16,8 +16,12 @@ import java.util.Collections;
 @Controller
 public class RegistrationController {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    public RegistrationController(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("user", new User());

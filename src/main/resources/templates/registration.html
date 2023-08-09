@@ -1,6 +1,5 @@
 <th:block th:replace="~{parts/common :: topBody}"/>
 
-    Add new user
     <p th:text="${message}"></p>
     <div th:if="${param.error}">
         Invalid username and password.
@@ -9,6 +8,6 @@
         You have been logged out.
     </div>
 
-    <th:block th:replace="~{parts/registration ::registrationForm}"/>
+    <th:block th:replace="~{parts/login ::registrationForm}"/>
 
 <th:block th:replace="~{parts/common :: bottomBody}"/>

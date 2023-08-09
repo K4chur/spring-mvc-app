@@ -1,7 +1,0 @@
-<th:block th:fragment="registrationForm">
-    <form th:action="@{/registration}" th:object="${user}" th:method="post">
-        <div><label> User Name : <input type="text" th:field="*{username}" name="username"/> </label></div>
-        <div><label> Password: <input type="password" th:field="*{password}" name="password"/> </label></div>
-        <div><input type="submit" value="Register"/></div>
-    </form>
-</th:block>

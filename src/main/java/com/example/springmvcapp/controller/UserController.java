@@ -3,7 +3,6 @@ package com.example.springmvcapp.controller;
 import com.example.springmvcapp.domain.Role;
 import com.example.springmvcapp.domain.User;
 import com.example.springmvcapp.repos.UserRepo;
-import com.example.springmvcapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    public UserController(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
 
     @GetMapping
-    public String userlist(Model model){
+    public String userList(Model model){
         model.addAttribute("users", userRepo.findAll());
         return "userList";
     }
