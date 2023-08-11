@@ -1,25 +1,21 @@
 package com.example.springmvcapp.controller;
 
-import com.example.springmvcapp.domain.Role;
 import com.example.springmvcapp.domain.User;
-import com.example.springmvcapp.repos.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvcapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @Controller
 public class RegistrationController {
 
-    private final UserRepo userRepo;
+    private final UserService userService;
 
-    public RegistrationController(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/registration")
@@ -31,17 +27,22 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("user") User user, Model model){
-        User userFromDb = userRepo.findUserByUsername(user.getUsername());
-
-        if(userFromDb != null){
+        if(!userService.addUser(user)){
             model.addAttribute("message", "User exists!");
             return "registration";
         }
 
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        userRepo.save(user);
-
         return "redirect:/login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code){
+        boolean isActivated = userService.activateUser(code);
+        if(isActivated){
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("message", "Activation code is not found!");
+        }
+        return "login";
     }
 }

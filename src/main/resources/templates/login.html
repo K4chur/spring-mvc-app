@@ -1,5 +1,6 @@
 <th:block th:replace="~{parts/common :: topBody}"/>
 
+    <p th:text="${message}"></p>
     <div th:if="${param.error}">
         Invalid username and password.
     </div>
