@@ -3,8 +3,9 @@ User editor
 <form th:action="@{/user}" th:method="post" th:object="${user}">
     <input type="hidden" th:field="*{id}" name="id"/>
     <input type="hidden" th:field="*{active}" name="id"/>
+    <input type="hidden" th:field="*{email}" name="id"/>
     <div><label> User Name : <input type="text" th:field="*{username}" name="username" th:value="${user.username}"/> </label></div>
-    <div><label> User Password :<input type="password" th:field="*{password}" name="id" th:valie="${user.password}"/> </label></div>
+    <div><label> User Password :<input type="password" th:field="*{password}" name="password" th:value="${user.password}"/> </label></div>
 
     <div th:each="role: ${roles}">
         <div><label> User Role : <input type="checkbox" th:field="*{roles}" th:value="${role}" th:name="${role}" th:checked="${user.roles.contains(role)}"> <span th:text="${role}"></span> </label></div>

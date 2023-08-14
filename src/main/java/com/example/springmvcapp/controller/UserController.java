@@ -2,29 +2,30 @@ package com.example.springmvcapp.controller;
 
 import com.example.springmvcapp.domain.Role;
 import com.example.springmvcapp.domain.User;
-import com.example.springmvcapp.repos.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvcapp.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    private final UserRepo userRepo;
+    private final UserService userService;
 
-    public UserController(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model){
         model.addAttribute("user",user);
@@ -32,11 +33,32 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String editUser(@ModelAttribute User user){
-        userRepo.save(user);
+        userService.saveUser(user);
         return "redirect:/user";
     }
 
+    @GetMapping("/profile")
+    public String userProfile(
+            Model model,
+            @AuthenticationPrincipal User user
+    ){
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String editProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String email,
+            @RequestParam String password,
+            Model model
+    ){
+        userService.updateUser(user,email,password);
+
+        return "redirect:/user/profile";
+    }
 }
 
