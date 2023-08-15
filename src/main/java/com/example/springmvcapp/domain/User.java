@@ -1,6 +1,8 @@
 package com.example.springmvcapp.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,17 @@ public class User implements UserDetails {
     @SequenceGenerator(name = "usr_seq", sequenceName = "usr_seq", allocationSize = 1)
     private Long id;
 
+    @NotBlank(message = "Username can`t be empty")
     private String username;
+    @NotBlank(message = "Password can`t be empty")
     private String password;
+    @NotBlank(message = "Password confirmation can`t be empty")
+    @Transient
+    private String passwordConfirmation;
+
     private boolean active;
+    @NotBlank(message = "Email can`t be empty")
+    @Email(message = "Email is not correct")
     private String email;
     private String activationCode;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

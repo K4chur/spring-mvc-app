@@ -1,13 +1,18 @@
 <th:block th:replace="~{parts/common :: topBody}"/>
 
-    <p th:text="${message}"></p>
-    <div th:if="${param.error}">
+    <div th:if="${notFound}" class="alert alert-danger" role="alert" th:text="${notFound}">
+    </div>
+    <div th:if="${activated}" class="alert alert-success" role="alert" th:text="${activated}">
+    </div>
+
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username and password.
     </div>
-    <div th:if="${param.logout}">
+    <div th:if="${param.logout}" class="alert alert-danger" role="alert">
         You have been logged out.
     </div>
 
-    <th:block th:replace="~{parts/login :: loginForm}"/>
+
+    <th:block th:replace="~{parts/forms :: loginForm}"/>
 
 <th:block th:replace="~{parts/common :: bottomBody}"/>

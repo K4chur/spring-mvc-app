@@ -3,10 +3,10 @@ package com.example.springmvcapp.service;
 import com.example.springmvcapp.domain.Role;
 import com.example.springmvcapp.domain.User;
 import com.example.springmvcapp.repos.UserRepo;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -22,9 +22,12 @@ public class UserService implements UserDetailsService {
 
     private final SmtpMailSender smtpMailSender;
 
-    public UserService(UserRepo userRepo, SmtpMailSender smtpMailSender) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepo userRepo, SmtpMailSender smtpMailSender, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.smtpMailSender = smtpMailSender;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepo.save(user);
 
@@ -67,6 +71,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setActivationCode(null);
+        user.setPasswordConfirmation(user.getPassword());
 
         userRepo.save(user);
         return true;
@@ -93,7 +98,7 @@ public class UserService implements UserDetailsService {
         }
 
         if(!StringUtils.isEmpty(password)){
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepo.save(user);

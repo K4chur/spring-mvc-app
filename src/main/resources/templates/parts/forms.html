@@ -5,10 +5,6 @@
             <input type="text" class="form-control" id="inputUsername" aria-describedby="usernameHelp" name="username" placeholder="Username">
         </div>
         <div class="mb-3">
-            <label for="inputEmail" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
-        </div>
-        <div class="mb-3">
             <label for="inputPassword" class="form-label">Password</label>
             <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
         </div>
@@ -27,16 +23,32 @@
     <form th:action="@{/registration}" th:object="${user}" th:method="post">
         <div class="mb-3">
             <label for="inputUsername" class="form-label">User name:</label>
-            <input type="text" th:field="*{username}" class="form-control" id="inputUsername" name="username" placeholder="Username">
+            <input type="text" th:field="*{username}" class="form-control" th:errorclass="is-invalid"
+                   th:value="${user?.username}" id="inputUsername" name="username" placeholder="Username">
+            <div th:if="${usernameError}" class="invalid-feedback" th:text="${usernameError}">
+            </div>
         </div>
         <div class="mb-3">
             <label for="inputEmail" class="form-label">Email:</label>
-            <input type="email" th:field="*{email}" class="form-control" id="inputEmail" aria-describedby="emailInput" name="email" placeholder="Email">
+            <input type="email" th:field="*{email}" class="form-control" th:errorclass="is-invalid"
+                   th:value="${user?.email}" id="inputEmail" aria-describedby="emailInput" name="email" placeholder="Email">
             <div id="emailInput" class="form-text">We'll never share your email with anyone else.</div>
+            <div th:if="${emailError}" class="invalid-feedback" th:text="${emailError}">
+            </div>
         </div>
         <div class="mb-3">
             <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" th:field="*{password}" class="form-control" id="inputPassword" placeholder="Password">
+            <input type="password" th:field="*{password}" th:class="form-control" th:errorclass="is-invalid"
+                   id="inputPassword" placeholder="Password">
+            <div th:if="${passwordError}" class="invalid-feedback" th:text="${passwordError}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="inputPasswordConfirmation" class="form-label">Password Confirmation</label>
+            <input type="password" name="passwordConfirmation" th:class="${passwordConfirmationError} ? 'form-control is-invalid' : 'form-control'"
+                   id="inputPasswordConfirmation" placeholder="Password Confirmation">
+            <div th:if="${passwordConfirmationError}" class="invalid-feedback" th:text="${passwordConfirmationError}">
+        </div>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
