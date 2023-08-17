@@ -47,10 +47,14 @@
             <label for="inputPasswordConfirmation" class="form-label">Password Confirmation</label>
             <input type="password" name="passwordConfirmation" th:class="${passwordConfirmationError} ? 'form-control is-invalid' : 'form-control'"
                    id="inputPasswordConfirmation" placeholder="Password Confirmation">
-            <div th:if="${passwordConfirmationError}" class="invalid-feedback" th:text="${passwordConfirmationError}">
+            <div th:if="${passwordConfirmationError}" class="invalid-feedback" th:text="${passwordConfirmationError}"></div>
         </div>
+        <div class="mb-3">
+            <div class="g-recaptcha" data-sitekey="6LebN7InAAAAAIkl-Nvo7-VwCYMl97GHKbVkeZH0"></div>
+            <div th:if="${captchaError}" class="alert alert-danger" th:text="${captchaError}"></div>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
+
     </form>
 
 </th:block>

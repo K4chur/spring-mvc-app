@@ -1,25 +1,34 @@
 package com.example.springmvcapp.controller;
 
 import com.example.springmvcapp.domain.User;
+import com.example.springmvcapp.domain.dto.CaptchaResponseDto;
 import com.example.springmvcapp.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Controller
 public class RegistrationController {
 
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+
+    @Value("${recaptcha.secret}")
+    private String secret;
+
+    private final RestTemplate restTemplate;
+
     private final UserService userService;
 
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, RestTemplate restTemplate) {
         this.userService = userService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/registration")
@@ -31,10 +40,17 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(
+            @RequestParam("g-recaptcha-response") String captchaResponse,
             @Valid @ModelAttribute("user") User user,
             BindingResult bindingResult,
             Model model
     ){
+        String url = String.format(CAPTCHA_URL,secret,captchaResponse);
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+
+        if(!response.isSuccess()){
+            model.addAttribute("captchaError","Fill captcha");
+        }
         if(user.getPassword() != null && !user.getPassword().equals(user.getPasswordConfirmation())){
             model.addAttribute("passwordConfirmationError", "Passwords aren`t equal");
             return "registration";
