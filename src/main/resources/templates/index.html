@@ -50,17 +50,19 @@
     <p>No messages available.</p>
 </div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    <div th:each="message: ${messages}" class="card p-0 m-2" style="width: 18rem;">
-        <div th:if="${message.filename != null}">
-            <img th:src="@{/img/} + ${message.filename}" class="card-img-top">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title" th:text="${message.tag}"></h5>
-            <p class="card-text" th:text="${message.text}"></p>
-        </div>
-        <div class="card-footer">
-            <p class="card-text" th:text="${message.author?.getUsername() ?: '<none>'}"></p>
+<div class="row row-cols-1 row-cols-md-3 g-4" data-masonry='{"percentPosition": true }'>
+    <div  th:each="message: ${messages}"  class="col">
+        <div class="card">
+            <div th:if="${message.filename != null}">
+                <img th:src="@{/img/} + ${message.filename}" class="card-img-top">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${message.tag}"></h5>
+                <p class="card-text" th:text="${message.text}"></p>
+            </div>
+            <div class="card-footer">
+                <p class="card-text" th:text="${message.author?.getUsername() ?: '<none>'}"></p>
+            </div>
         </div>
     </div>
 </div>
