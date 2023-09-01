@@ -11,16 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -92,8 +91,36 @@ public class MainController {
         }
 
         model.addAttribute("messages",messageRepo.findAll());
-        return "index";
+        return "redirect:/index";
     }
+
+    @GetMapping("/user-messages/{user}")
+    public String userMessages(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user,
+            @RequestParam(name = "message", required = false) Long messageId,
+            Model model
+    ){
+        Set<Message> messages = user.getMessages();
+        model.addAttribute("messages", messages);
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscribtions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+        if(messageId == null){
+            model.addAttribute("message", new Message());
+        } else {
+            model.addAttribute("show", true);
+            Optional<Message> messageOptional = messageRepo.findById(messageId);
+            if (messageOptional.isPresent()) {
+                model.addAttribute("message", messageOptional.get());
+            }
+        }
+
+        return "userMessages";
+    }
+
 
 
 }

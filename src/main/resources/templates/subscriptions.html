@@ -1,0 +1,11 @@
+<th:block th:replace="~{parts/common :: topBody}"/>
+
+<h3 th:text="${userChannel.username}"></h3>
+<div th:text="${type}"></div>
+<ul class="list-group" th:each="user : ${users}">
+    <li class="list-group-item">
+        <a th:href="@{/user-messages/{userId}(userId=${user.id})}" th:text="${user.username}"></a>
+    </li>
+</ul>
+
+<th:block th:replace="~{parts/common :: bottomBody}"/>

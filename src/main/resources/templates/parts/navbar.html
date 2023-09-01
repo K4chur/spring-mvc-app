@@ -9,10 +9,13 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" th:if="${authUser}">
                     <a class="nav-link active" aria-current="page" href="/index">Messages</a>
                 </li>
-                <li class="nav-item" th:if="${principal?.isAdmin() ?: false}">
+                <li class="nav-item" th:if="${authUser}">
+                    <a class="nav-link active" aria-current="page" th:href="@{/user-messages/{authId}(authId=${authId})}">My messages</a>
+                </li>
+                <li class="nav-item" th:if="${authUser?.isAdmin() ?: false}">
                     <a class="nav-link active" aria-current="page" href="/user">User list</a>
                 </li>
             </ul>
@@ -28,13 +31,13 @@
 
 
 
-            <div class="navbar-nav"  th:if="${username}">
+            <div class="navbar-nav"  th:if="${authUser}">
                 <li  class="nav-item">
-                    <a class="nav-link active" th:text="${username ?: 'Guest'}" href="/user/profile"></a>
+                    <a class="nav-link active" th:text="${username ?: 'None'}" href="/user/profile"></a>
                 </li>
             </div>
 
-            <div class="navbar-nav"  th:unless="${username}">
+            <div class="navbar-nav"  th:unless="${authUser}">
                 <li  class="nav-item">
                     <a class="nav-link" th:text="Guest"></a>
                 </li>
