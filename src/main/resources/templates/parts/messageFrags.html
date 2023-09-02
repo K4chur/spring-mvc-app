@@ -5,48 +5,48 @@
             Message editor
         </button>
 
-    <div th:class="${show} ? collapse.show : collapse " id="collapseAdd">
-        <form th:action="@{/index}" th:object="${message}" th:method="post" enctype="multipart/form-data"
-              class="row g-3 needs-validation">
-            <div class="input-group mb-3">
-                <label class="visually-hidden" for="Text">Text</label>
-                <div class="input-group-text">Text:</div>
-                <input type="text" class="form-control" th:errorclass="is-invalid"
-                       th:value="${message.text}"
-                       id="Text" th:field="*{text}" placeholder="Lets tell something...">
-                <div th:if="${textError}" class="invalid-feedback" th:text="${textError}">
+        <div th:class="${show} ? collapse.show : collapse " id="collapseAdd">
+            <form th:action="@{/index}" th:object="${message}" th:method="post" enctype="multipart/form-data"
+                  class="row g-3 needs-validation">
+                <div class="input-group mb-3">
+                    <label class="visually-hidden" for="Text">Text</label>
+                    <div class="input-group-text">Text:</div>
+                    <input type="text" class="form-control" th:errorclass="is-invalid"
+                           th:value="${message.text}"
+                           id="Text" th:field="*{text}" placeholder="Lets tell something..."/>
+                    <div th:if="${textError}" class="invalid-feedback" th:text="${textError}">
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group mb-3">
-                <label class="visually-hidden" for="Tag">Tag</label>
-                <div class="input-group-text">Tag:</div>
-                <input type="text" class="form-control" th:errorclass="is-invalid"
-                       th:value="${message.tag}"
-                       id="Tag" th:field="*{tag}" placeholder="Tag">
-                <div th:if="${tagError}" class="invalid-feedback" th:text="${tagError}">
+                <div class="input-group mb-3">
+                    <label class="visually-hidden" for="Tag">Tag</label>
+                    <div class="input-group-text">Tag:</div>
+                    <input type="text" class="form-control" th:errorclass="is-invalid"
+                           th:value="${message.tag}"
+                           id="Tag" th:field="*{tag}" placeholder="Tag"/>
+                    <div th:if="${tagError}" class="invalid-feedback" th:text="${tagError}">
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="File" class="visually-hidden">Choose file:</label>
-                <input class="form-control" type="file" name="file" id="File">
-            </div>
-            <input th:if="${message}" type="hidden" name="id" th:field="*{id}" th:value="${message.id}">
-            <p>
-                <input type="submit" class="btn btn-primary mb-3" value="Submit"/>
-                <input type="reset" class="btn btn-primary mb-3" value="Reset"/>
-            </p>
-        </form>
-    </div>
+                <div class="mb-3">
+                    <label for="File" class="visually-hidden">Choose file:</label>
+                    <input class="form-control" type="file" name="file" id="File"/>
+                </div>
+                <input th:if="${message}" type="hidden" name="id" th:field="*{id}" th:value="${message.id}"/>
+                <p>
+                    <input type="submit" class="btn btn-primary mb-3" value="Submit"/>
+                    <input type="reset" class="btn btn-primary mb-3" value="Reset"/>
+                </p>
+            </form>
+        </div>
     </p>
 </th:block>
 
 <th:block th:fragment="messageList">
-    <div class="row row-cols-1 row-cols-md-3 g-4" data-masonry='{"percentPosition": true }'>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="message-list" data-masonry='{"percentPosition": true }'>
         <div th:each="message: ${messages}" class="col">
-            <div class="card">
+            <div class="card" th:data-id="${message.id}">
                 <div th:if="${message.filename != null}">
-                    <img th:src="@{/img/} + ${message.filename}" class="card-img-top">
+                    <img th:src="@{/img/} + ${message.filename}" class="card-img-top"/>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" th:text="'#'+${message.tag}"></h5>

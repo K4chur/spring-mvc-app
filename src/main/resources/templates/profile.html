@@ -3,15 +3,15 @@
 <p th:text="${message}"></p>
 <h5 th:text="${username}"></h5>
 <form th:action="@{/user/profile}" th:object="${user}" th:method="post">
-    <input type="hidden" th:field="*{username}" class="form-control" id="inputUsername" name="username" placeholder="Username" th:value="${user.username}">
+    <input type="hidden" th:field="*{username}" class="form-control" id="inputUsername" name="username" placeholder="Username" th:value="${user.username}"/>
     <div class="mb-3">
         <label for="email" class="form-label">Email:</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailInput" name="email" placeholder="Email" th:value="${user.email}">
+        <input type="email" class="form-control" id="email" aria-describedby="emailInput" name="email" placeholder="Email" th:value="${user.email}"/>
         <div id="emailInput" class="form-text">We'll never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password:</label>
-        <input type="password" class="form-control" id="password"  name="password" placeholder="Password">
+        <input type="password" class="form-control" id="password"  name="password" placeholder="Password"/>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
