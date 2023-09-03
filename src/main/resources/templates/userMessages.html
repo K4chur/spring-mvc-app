@@ -37,6 +37,10 @@
     <p>No messages available.</p>
 </div>
 
+<th:block th:replace="~{parts/pager :: pager}"/>
+
 <th:block th:replace="~{parts/messageFrags :: messageList}"/>
+
+<th:block th:replace="~{parts/pager :: pager}"/>
 
 <th:block th:replace="~{parts/common :: bottomBody}"/>

@@ -3,7 +3,8 @@
 
 <form th:method="get" th:action="@{/index}" class="row row-cols-lg-auto g-3 align-items-center mb-3">
     <div class="col-12">
-        <input type="text" name="filterValue" th:value="${filterValue}" placeholder="Search by tag" class="form-control"/>
+        <input type="text" name="filterValue" th:value="${filterValue}" placeholder="Search by tag"
+               class="form-control"/>
     </div>
 
     <div class="col-12">
@@ -13,10 +14,16 @@
 
 <th:block th:replace="~{parts/messageFrags :: messageEdit}"/>
 
-<div th:if="${messages.isEmpty()}">
+<div th:if="${messagePage.content?.isEmpty()}">
     <p>No messages available.</p>
 </div>
 
+
+<th:block th:replace="~{parts/pager :: pager}"/>
+
 <th:block th:replace="~{parts/messageFrags :: messageList}"/>
+
+<th:block th:replace="~{parts/pager :: pager}"/>
+
 
 <th:block th:replace="~{parts/common :: bottomBody}"/>

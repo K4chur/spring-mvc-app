@@ -43,7 +43,7 @@
 
 <th:block th:fragment="messageList">
     <div class="row row-cols-1 row-cols-md-3 g-4" id="message-list" data-masonry='{"percentPosition": true }'>
-        <div th:each="message: ${messages}" class="col">
+        <div th:each="message: ${messagePage.content}" class="col grid-item">
             <div class="card" th:data-id="${message.id}">
                 <div th:if="${message.filename != null}">
                     <img th:src="@{/img/} + ${message.filename}" class="card-img-top"/>
